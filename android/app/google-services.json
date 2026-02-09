@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "553291725300",
+    "project_id": "carwazz",
+    "storage_bucket": "carwazz.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:553291725300:android:ea5f182e861b9eef9021a1",
+        "android_client_info": {
+          "package_name": "com.example.car_wazz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWnggGmooUWvLFwOhOjsr0IosgHS5U_2k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
