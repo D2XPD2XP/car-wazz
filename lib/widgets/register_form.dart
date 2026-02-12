@@ -190,6 +190,7 @@ class RegisterForm extends StatelessWidget {
                 registerC.email,
                 registerC.password,
                 registerC.name,
+                registerC.confirm
               );
             },
             child: Container(

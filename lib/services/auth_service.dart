@@ -38,6 +38,8 @@ class AuthService {
       'username': name,
     });
 
+    _auth.signOut();
+
     return cred;
   }
 

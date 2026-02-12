@@ -8,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 class LoginForm extends StatelessWidget {
   LoginForm({super.key});
 
-  final authC = Get.put(AuthController());
+  final authC = Get.find<AuthController>();
   final loginC = Get.put(LoginFormController());
 
   @override
@@ -102,6 +102,9 @@ class LoginForm extends StatelessWidget {
           ),
           SizedBox(height: 40),
           GestureDetector(
+            onTap: () async {
+              authC.login(loginC.email, loginC.password);
+            },
             child: Container(
               width: double.infinity,
               height: 48,
