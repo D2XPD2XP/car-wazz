@@ -103,7 +103,7 @@ class LoginForm extends StatelessWidget {
           SizedBox(height: 40),
           GestureDetector(
             onTap: () async {
-              authC.login(loginC.email, loginC.password);
+              await authC.login(loginC.email, loginC.password);
             },
             child: Container(
               width: double.infinity,

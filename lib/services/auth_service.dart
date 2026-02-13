@@ -1,22 +1,16 @@
+import 'package:car_wazz/services/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final _userService = UserService();
 
   Stream<User?> authState() {
     return _auth.authStateChanges();
   }
 
-  Future<UserCredential> login(
-    String email,
-    String password,
-  ) {
-    return _auth.signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+  Future<UserCredential> login(String email, String password) {
+    return _auth.signInWithEmailAndPassword(email: email, password: password);
   }
 
   Future<UserCredential> register(
@@ -28,18 +22,8 @@ class AuthService {
       email: email,
       password: password,
     );
-
-    await _firestore
-        .collection('user')
-        .doc(cred.user!.uid)
-        .set({
-      'user_id': cred.user!.uid,
-      'email': email,
-      'username': name,
-    });
-
+    await _userService.createUser(cred.user!.uid, email, name);
     _auth.signOut();
-
     return cred;
   }
 

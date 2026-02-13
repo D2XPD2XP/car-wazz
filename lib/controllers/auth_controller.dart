@@ -1,3 +1,4 @@
+import 'package:car_wazz/controllers/login_form_controller.dart';
 import 'package:car_wazz/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,7 @@ class AuthController extends GetxController {
     try {
       isLoading.value = true;
       await _authService.login(email, password);
+      Get.delete<LoginFormController>();
     } catch (e) {
       Get.dialog(
         AlertDialog(
