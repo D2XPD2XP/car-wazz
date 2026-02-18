@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class VehicleCard extends StatelessWidget {
-  const VehicleCard({super.key});
+class HomeVehicleCard extends StatelessWidget {
+  const HomeVehicleCard({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 67,
       width: double.infinity,
-      padding: EdgeInsets.only(top: 8, bottom: 14),
+      padding: EdgeInsets.only(top: 8, bottom: 8),
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(color: Color(0xFFE0E0E0)),
@@ -31,7 +32,6 @@ class VehicleCard extends StatelessWidget {
               fontSize: 14,
             ),
           ),
-          SizedBox(height: 8,),
           Text(
             '981',
             style: GoogleFonts.plusJakartaSans(

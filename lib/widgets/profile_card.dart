@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProfileCard extends StatelessWidget {
-  const ProfileCard({super.key});
+  final String username;
+  final String email;
+
+  const ProfileCard({super.key, required this.username, required this.email});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +41,7 @@ class ProfileCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'DZ Carwash',
+                username,
                 style: GoogleFonts.plusJakartaSans(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
@@ -55,7 +58,7 @@ class ProfileCard extends StatelessWidget {
                 ),
               ),
               Text(
-                'dzxp@gmail.com',
+                email,
                 style: GoogleFonts.plusJakartaSans(
                   color: Colors.white,
                   fontWeight: FontWeight.w400,

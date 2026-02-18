@@ -1,5 +1,8 @@
+import 'package:car_wazz/controllers/home_controller.dart';
 import 'package:car_wazz/controllers/login_form_controller.dart';
+import 'package:car_wazz/models/user.dart';
 import 'package:car_wazz/services/auth_service.dart';
+import 'package:car_wazz/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,13 +10,24 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AuthController extends GetxController {
   final AuthService _authService = AuthService();
+  final UserService _userService = UserService();
   final firebaseUser = Rxn<User>();
+  final currentUser = Rxn<UserModel>();
   final isLoading = false.obs;
 
   @override
   void onInit() {
     firebaseUser.bindStream(_authService.authState());
+    ever(firebaseUser, _handleAuthChanged);
     super.onInit();
+  }
+
+  void _handleAuthChanged(User? user) async {
+    if (user == null) {
+      currentUser.value = null;
+    } else {
+      currentUser.value = await _userService.getUser(user.uid);
+    }
   }
 
   Future<void> login(String email, String password) async {
@@ -150,7 +164,10 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> logout() {
-    return _authService.logout();
+  Future<void> logout() async {
+    await _authService.logout();
+    if (Get.isRegistered<HomeController>()) {
+      Get.delete<HomeController>();
+    }
   }
 }

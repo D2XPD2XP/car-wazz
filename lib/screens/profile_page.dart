@@ -1,11 +1,15 @@
+import 'package:car_wazz/controllers/auth_controller.dart';
 import 'package:car_wazz/widgets/profile_card.dart';
 import 'package:car_wazz/widgets/profile_menu_item.dart';
 import 'package:car_wazz/widgets/vehicle_card.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+  ProfilePage({super.key});
+
+  final _authC = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +34,13 @@ class ProfilePage extends StatelessWidget {
         padding: EdgeInsets.only(top: 28, right: 28, left: 28),
         child: Column(
           children: [
-            ProfileCard(),
+            Obx(() {
+              final user = _authC.currentUser.value;
+              if (user == null) {
+                return CircularProgressIndicator(color: Color(0xFF0271BA),);
+              }
+              return ProfileCard(email: user.email, username: user.username);
+            }),
             SizedBox(height: 14),
             Row(
               children: [
@@ -44,12 +54,14 @@ class ProfilePage extends StatelessWidget {
               icon: Icons.person_outline,
               color: Color(0xFF0271BA),
               title: 'Edit Profile',
+              onTap: () {},
             ),
-            SizedBox(height: 14,),
+            SizedBox(height: 14),
             ProfileMenuItem(
               icon: Icons.logout,
               color: Colors.red,
               title: 'Logout',
+              onTap: _authC.logout,
             ),
           ],
         ),
