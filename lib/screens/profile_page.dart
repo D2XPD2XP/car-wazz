@@ -52,13 +52,6 @@ class ProfilePage extends StatelessWidget {
             ),
             SizedBox(height: 18),
             ProfileMenuItem(
-              icon: Icons.person_outline,
-              color: Color(0xFF0271BA),
-              title: 'Edit Profile',
-              onTap: () {},
-            ),
-            SizedBox(height: 18),
-            ProfileMenuItem(
               icon: Icons.dashboard_customize_outlined,
               color: Color(0xFF0271BA),
               title: 'Manage Services',
