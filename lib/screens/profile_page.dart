@@ -29,7 +29,7 @@ class ProfilePage extends StatelessWidget {
           child: Container(color: Colors.grey.shade300, height: 1.0),
         ),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFEEEEEE),
       body: Container(
         padding: EdgeInsets.only(top: 28, right: 28, left: 28),
         child: Column(
@@ -37,7 +37,7 @@ class ProfilePage extends StatelessWidget {
             Obx(() {
               final user = _authC.currentUser.value;
               if (user == null) {
-                return CircularProgressIndicator(color: Color(0xFF0271BA),);
+                return CircularProgressIndicator(color: Color(0xFF0271BA));
               }
               return ProfileCard(email: user.email, username: user.username);
             }),

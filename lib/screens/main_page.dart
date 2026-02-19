@@ -1,4 +1,6 @@
 import 'package:car_wazz/controllers/home_controller.dart';
+import 'package:car_wazz/screens/employee_page.dart';
+import 'package:car_wazz/screens/history_page.dart';
 import 'package:car_wazz/screens/homepage.dart';
 import 'package:car_wazz/screens/profile_page.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +17,7 @@ class MainPage extends StatelessWidget {
       return Scaffold(
         body: IndexedStack(
           index: _homeC.currentIndex.value,
-          children: [Homepage(), Homepage(), Homepage(), ProfilePage()],
+          children: [Homepage(), EmployeePage(), HistoryPage(), ProfilePage()],
         ),
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Colors.white,

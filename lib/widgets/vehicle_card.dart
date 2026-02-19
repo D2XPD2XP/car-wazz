@@ -24,12 +24,13 @@ class VehicleCard extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'Car',
+            'Total Bike Washed',
             style: GoogleFonts.plusJakartaSans(
               color: Color(0xFF0271BA),
               fontWeight: FontWeight.w400,
               fontSize: 14,
             ),
+            textAlign: TextAlign.center,
           ),
           SizedBox(height: 8,),
           Text(

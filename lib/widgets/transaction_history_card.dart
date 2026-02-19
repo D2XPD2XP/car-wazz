@@ -1,8 +1,9 @@
+import 'package:car_wazz/widgets/rupiah_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class TransactionCard extends StatelessWidget {
-  const TransactionCard({super.key});
+class TransactionHistoryCard extends StatelessWidget {
+  const TransactionHistoryCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -95,20 +96,34 @@ class TransactionCard extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(width: 8,),
+            ],
+          ),
+          SizedBox(height: 8),
+          Row(
+            children: [
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Rp. 80.000',
-                      style: GoogleFonts.plusJakartaSans(
-                        color: Color(0xFF2CA600),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
+                    RupiahFormatter(
+                      price: 80000,
+                      size: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF2CA600),
                     ),
                   ],
+                ),
+              ),
+              SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  '12 February 2025',
+                  style: GoogleFonts.plusJakartaSans(
+                    color: Color(0xFF0271BA),
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14
+                  ),
+                  textAlign: TextAlign.end,
                 ),
               ),
             ],

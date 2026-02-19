@@ -16,7 +16,7 @@ class Homepage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFEEEEEE),
       floatingActionButton: Container(
         margin: EdgeInsets.only(),
         height: 60,
@@ -106,13 +106,30 @@ class Homepage extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 12,),
+                    SizedBox(height: 12),
                     ListView.builder(
                       padding: EdgeInsets.zero,
                       shrinkWrap: true,
                       itemCount: 20,
                       physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) => TransactionCard(),
+                      itemBuilder: (context, index) => Dismissible(
+                        key: ValueKey(index),
+                        background: Container(
+                          margin: EdgeInsets.only(bottom: 20),
+                          padding: EdgeInsets.only(
+                            top: 10,
+                            right: 14,
+                            left: 14,
+                            bottom: 18,
+                          ),
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 153, 28, 19),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        onDismissed: (direction) {},
+                        child: TransactionCard(),
+                      ),
                     ),
                   ],
                 ),
