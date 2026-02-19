@@ -1,4 +1,5 @@
 import 'package:car_wazz/controllers/auth_controller.dart';
+import 'package:car_wazz/screens/service_page.dart';
 import 'package:car_wazz/widgets/profile_card.dart';
 import 'package:car_wazz/widgets/profile_menu_item.dart';
 import 'package:car_wazz/widgets/vehicle_card.dart';
@@ -55,6 +56,15 @@ class ProfilePage extends StatelessWidget {
               color: Color(0xFF0271BA),
               title: 'Edit Profile',
               onTap: () {},
+            ),
+            SizedBox(height: 18),
+            ProfileMenuItem(
+              icon: Icons.dashboard_customize_outlined,
+              color: Color(0xFF0271BA),
+              title: 'Manage Services',
+              onTap: () {
+                Get.to(() => ServicePage());
+              },
             ),
             SizedBox(height: 14),
             ProfileMenuItem(

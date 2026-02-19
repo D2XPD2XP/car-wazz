@@ -31,6 +31,7 @@ class EmployeePage extends StatelessWidget {
         height: 60,
         width: 60,
         child: FloatingActionButton(
+          heroTag: 'employeeFab',
           onPressed: () {},
           backgroundColor: const Color(0xFF0271BA),
           shape: CircleBorder(),
