@@ -4,6 +4,7 @@ import 'package:car_wazz/widgets/employee_card.dart';
 import 'package:car_wazz/widgets/home_vehicle_card.dart';
 import 'package:car_wazz/widgets/income_card.dart';
 import 'package:car_wazz/widgets/transaction_card.dart';
+import 'package:car_wazz/widgets/transaction_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,7 +24,9 @@ class Homepage extends StatelessWidget {
         width: 60,
         child: FloatingActionButton(
           heroTag: 'homeFab',
-          onPressed: () {},
+          onPressed: () {
+            Get.bottomSheet(const TransactionSheet(), isScrollControlled: true);
+          },
           backgroundColor: const Color(0xFF0271BA),
           shape: CircleBorder(),
           child: Icon(Icons.add, size: 40, color: Colors.white),

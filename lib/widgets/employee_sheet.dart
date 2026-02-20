@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ServiceSheet extends StatelessWidget {
-  const ServiceSheet({super.key});
+class EmployeeSheet extends StatelessWidget {
+  const EmployeeSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +24,9 @@ class ServiceSheet extends StatelessWidget {
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          SizedBox(height: 18,),
+          SizedBox(height: 18),
           Text(
-            "Add Service Option",
+            "Add Employee",
             style: GoogleFonts.plusJakartaSans(
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -36,7 +36,7 @@ class ServiceSheet extends StatelessWidget {
           TextField(
             cursorColor: Color(0xFF0271BA),
             decoration: InputDecoration(
-              labelText: 'Service Name',
+              labelText: 'Name',
               floatingLabelStyle: TextStyle(color: Color(0xFF0271BA)),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -60,10 +60,8 @@ class ServiceSheet extends StatelessWidget {
           SizedBox(height: 12),
           TextField(
             cursorColor: Color(0xFF0271BA),
-            keyboardType: TextInputType.number,
             decoration: InputDecoration(
-              labelText: 'Price',
-              prefixText: 'Rp. ',
+              labelText: 'Phone Number',
               floatingLabelStyle: TextStyle(color: Color(0xFF0271BA)),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -97,7 +95,7 @@ class ServiceSheet extends StatelessWidget {
               ),
               onPressed: () {},
               child: Text(
-                "Add Service",
+                "Confirm",
                 style: const TextStyle(
                   fontSize: 16,
                   color: Colors.white,

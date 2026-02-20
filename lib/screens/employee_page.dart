@@ -1,5 +1,7 @@
 import 'package:car_wazz/widgets/employee_item.dart';
+import 'package:car_wazz/widgets/employee_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EmployeePage extends StatelessWidget {
@@ -32,7 +34,9 @@ class EmployeePage extends StatelessWidget {
         width: 60,
         child: FloatingActionButton(
           heroTag: 'employeeFab',
-          onPressed: () {},
+          onPressed: () {
+            Get.bottomSheet(const EmployeeSheet(), isScrollControlled: true);
+          },
           backgroundColor: const Color(0xFF0271BA),
           shape: CircleBorder(),
           child: Icon(Icons.add, size: 40, color: Colors.white),
