@@ -1,4 +1,4 @@
-import 'package:car_wazz/controllers/home_controller.dart';
+import 'package:car_wazz/controllers/main_controller.dart';
 import 'package:car_wazz/controllers/login_form_controller.dart';
 import 'package:car_wazz/models/user.dart';
 import 'package:car_wazz/services/auth_service.dart';
@@ -166,8 +166,8 @@ class AuthController extends GetxController {
 
   Future<void> logout() async {
     await _authService.logout();
-    if (Get.isRegistered<HomeController>()) {
-      Get.delete<HomeController>();
+    if (Get.isRegistered<MainController>()) {
+      Get.delete<MainController>();
     }
   }
 }

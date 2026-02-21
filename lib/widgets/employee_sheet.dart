@@ -1,11 +1,34 @@
+import 'package:car_wazz/controllers/employee_form_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EmployeeSheet extends StatelessWidget {
-  const EmployeeSheet({super.key});
+  final String? id;
+  final String? name;
+  final String? pNumber;
+  final Future<void> Function(String, String)? onAdd;
+  final Future<void> Function(String, String, String)? onEdit;
+
+  EmployeeSheet({
+    super.key,
+    this.id,
+    this.name,
+    this.pNumber,
+    this.onAdd,
+    this.onEdit,
+  });
+
+  final employeeformC = Get.put(EmployeeFormController());
 
   @override
   Widget build(BuildContext context) {
+    employeeformC.clearForm();
+
+    if (onEdit != null) {
+      employeeformC.editEmployee(name!, pNumber!);
+    }
+
     return Container(
       height: MediaQuery.of(context).size.height * 0.45,
       width: double.infinity,
@@ -26,7 +49,7 @@ class EmployeeSheet extends StatelessWidget {
           ),
           SizedBox(height: 18),
           Text(
-            "Add Employee",
+            onAdd != null ? "Add Employee" : "Edit Employee",
             style: GoogleFonts.plusJakartaSans(
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -34,6 +57,7 @@ class EmployeeSheet extends StatelessWidget {
           ),
           SizedBox(height: 18),
           TextField(
+            controller: employeeformC.nameC,
             cursorColor: Color(0xFF0271BA),
             decoration: InputDecoration(
               labelText: 'Name',
@@ -59,6 +83,8 @@ class EmployeeSheet extends StatelessWidget {
           ),
           SizedBox(height: 12),
           TextField(
+            controller: employeeformC.phoneC,
+            keyboardType: TextInputType.phone,
             cursorColor: Color(0xFF0271BA),
             decoration: InputDecoration(
               labelText: 'Phone Number',
@@ -93,7 +119,17 @@ class EmployeeSheet extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () async {
+                if (onAdd != null) {
+                  await onAdd!(employeeformC.name, employeeformC.phoneNumber);
+                } else if (onEdit != null) {
+                  await onEdit!(
+                    id!,
+                    employeeformC.name,
+                    employeeformC.phoneNumber,
+                  );
+                }
+              },
               child: Text(
                 "Confirm",
                 style: const TextStyle(

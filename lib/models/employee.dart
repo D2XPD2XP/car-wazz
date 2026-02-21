@@ -11,7 +11,7 @@ class Employee {
 
   factory Employee.fromFirestore(Map<String, dynamic> data, String id) {
     return Employee(
-      employeeId: data['employee_id'] ?? '',
+      employeeId: id,
       name: data['name'] ?? '',
       phoneNumber: data['phone_number'] ?? '',
     );

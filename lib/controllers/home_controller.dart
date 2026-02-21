@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  final currentIndex = 0.obs;
+  final isDispose = false.obs;
 
-  Future<void> changePage(int idx) async {
-    currentIndex.value = idx;
+  void toggleIncome() {
+    isDispose.toggle();
   }
 }

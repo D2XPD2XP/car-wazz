@@ -1,15 +1,20 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class IncomeCard extends StatelessWidget {
-  const IncomeCard({super.key});
+  final VoidCallback onTap;
+  final bool isDispose;
+
+  const IncomeCard({super.key, required this.onTap, required this.isDispose});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       height: 140,
-      padding: EdgeInsets.only(left: 18, top: 18),
+      padding: EdgeInsets.only(left: 18, top: 18, right: 14),
       decoration: BoxDecoration(
         color: Color(0xFF0271BA),
         borderRadius: BorderRadius.circular(12),
@@ -39,7 +44,7 @@ class IncomeCard extends StatelessWidget {
                   ),
                   SizedBox(height: 6),
                   Text(
-                    "20 January 2026",
+                    DateFormat('dd MMMM yyyy', 'en_US').format(DateTime.now()),
                     style: GoogleFonts.plusJakartaSans(
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
@@ -49,19 +54,26 @@ class IncomeCard extends StatelessWidget {
                 ],
               ),
               SizedBox(width: 18),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
+              GestureDetector(
+                onTap: onTap,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    isDispose == true ? Icons.visibility : Icons.visibility_off,
+                    color: Color(0xFF0271BA),
+                  ),
                 ),
-                child: Icon(Icons.visibility_off, color: Color(0xFF0271BA)),
               ),
             ],
           ),
           SizedBox(height: 18),
-          Text(
-            "Rp. 20.000.000",
+          AutoSizeText(
+            isDispose == true ? "Rp. ..." : "Rp. 20.000.000",
+            maxLines: 1,
             style: GoogleFonts.plusJakartaSans(
               fontSize: 18,
               fontWeight: FontWeight.bold,

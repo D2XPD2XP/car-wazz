@@ -1,3 +1,4 @@
+import 'package:car_wazz/controllers/employee_controller.dart';
 import 'package:car_wazz/widgets/employee_item.dart';
 import 'package:car_wazz/widgets/employee_sheet.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,9 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EmployeePage extends StatelessWidget {
-  const EmployeePage({super.key});
+  EmployeePage({super.key});
+
+  final employeeC = Get.find<EmployeeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -34,22 +37,46 @@ class EmployeePage extends StatelessWidget {
         width: 60,
         child: FloatingActionButton(
           heroTag: 'employeeFab',
-          onPressed: () {
-            Get.bottomSheet(const EmployeeSheet(), isScrollControlled: true);
+          onPressed: () {  
+            Get.bottomSheet(EmployeeSheet(onAdd: employeeC.createEmployee,), isScrollControlled: true);
           },
           backgroundColor: const Color(0xFF0271BA),
           shape: CircleBorder(),
           child: Icon(Icons.add, size: 40, color: Colors.white),
         ),
       ),
-      body: Container(
-        margin: EdgeInsets.only(top: 18),
-        padding: EdgeInsets.symmetric(horizontal: 28),
-        child: ListView.builder(
-          itemCount: 10,
-          itemBuilder: (context, index) => EmployeeItem(),
-        ),
-      ),
+      body: Obx(() {
+        if (employeeC.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (employeeC.employees.isEmpty) {
+          return Center(
+            child: Text(
+              "No Employees",
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 16,
+                color: Color(0xFF0271BA),
+              ),
+            ),
+          );
+        }
+
+        return Container(
+          margin: EdgeInsets.only(top: 18),
+          padding: EdgeInsets.symmetric(horizontal: 28),
+          child: ListView.builder(
+            itemCount: employeeC.employees.length,
+            itemBuilder: (context, index) => EmployeeItem(
+              id: employeeC.employees[index].employeeId,
+              name: employeeC.employees[index].name,
+              phoneNumber: employeeC.employees[index].phoneNumber,
+              onDelete: employeeC.deleteEmployee,
+              onEdit: employeeC.updateEmployee,
+            ),
+          ),
+        );
+      }),
     );
   }
 }

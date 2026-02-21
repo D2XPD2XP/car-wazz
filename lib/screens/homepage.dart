@@ -1,4 +1,5 @@
 import 'package:car_wazz/controllers/auth_controller.dart';
+import 'package:car_wazz/controllers/home_controller.dart';
 import 'package:car_wazz/widgets/custom_search_bar.dart';
 import 'package:car_wazz/widgets/employee_card.dart';
 import 'package:car_wazz/widgets/home_vehicle_card.dart';
@@ -13,6 +14,7 @@ class Homepage extends StatelessWidget {
   Homepage({super.key});
 
   final _authC = Get.find<AuthController>();
+  final _homeC = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +68,15 @@ class Homepage extends StatelessWidget {
                     SizedBox(height: 18),
                     Row(
                       children: [
-                        Expanded(flex: 2, child: IncomeCard()),
+                        Expanded(
+                          flex: 2,
+                          child: Obx(() {
+                            return IncomeCard(
+                              onTap: _homeC.toggleIncome,
+                              isDispose: _homeC.isDispose.value,
+                            );
+                          }),
+                        ),
                         SizedBox(width: 12),
                         Expanded(
                           flex: 1,

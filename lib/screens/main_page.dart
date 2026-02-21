@@ -1,4 +1,6 @@
-import 'package:car_wazz/controllers/home_controller.dart';
+import 'package:car_wazz/controllers/auth_controller.dart';
+import 'package:car_wazz/controllers/employee_controller.dart';
+import 'package:car_wazz/controllers/main_controller.dart';
 import 'package:car_wazz/screens/employee_page.dart';
 import 'package:car_wazz/screens/history_page.dart';
 import 'package:car_wazz/screens/homepage.dart';
@@ -9,14 +11,28 @@ import 'package:get/get.dart';
 class MainPage extends StatelessWidget {
   MainPage({super.key});
 
-  final _homeC = Get.put(HomeController());
+  final authC = Get.find<AuthController>();
+  final _mainC = Get.put(MainController());
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
+      if (authC.currentUser.value == null) {
+        return const Scaffold(
+          backgroundColor: Colors.white,
+          body: Center(
+            child: CircularProgressIndicator(color: Color(0xFF0271BA)),
+          ),
+        );
+      }
+
+      if (!Get.isRegistered<EmployeeController>()) {
+        Get.put(EmployeeController(authC.currentUser.value!.userId));
+      }
+
       return Scaffold(
         body: IndexedStack(
-          index: _homeC.currentIndex.value,
+          index: _mainC.currentIndex.value,
           children: [Homepage(), EmployeePage(), HistoryPage(), ProfilePage()],
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -39,11 +55,11 @@ class MainPage extends StatelessWidget {
               label: 'Profile',
             ),
           ],
-          currentIndex: _homeC.currentIndex.value,
+          currentIndex: _mainC.currentIndex.value,
           selectedItemColor: Color(0xFF0271BA),
           unselectedItemColor: Colors.black,
           showUnselectedLabels: true,
-          onTap: _homeC.changePage,
+          onTap: _mainC.changePage,
           type: BottomNavigationBarType.fixed,
         ),
       );

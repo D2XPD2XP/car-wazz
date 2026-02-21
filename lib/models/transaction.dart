@@ -1,7 +1,7 @@
 import 'package:car_wazz/enums/vehicle_type_enum.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Transaction {
+class TransactionModel {
   final String transactionId;
   final String employeeId;
   final String serviceId;
@@ -11,7 +11,7 @@ class Transaction {
   final DateTime date;
   final double totalAmount;
 
-  const Transaction({
+  const TransactionModel({
     required this.transactionId,
     required this.employeeId,
     required this.serviceId,
@@ -22,13 +22,16 @@ class Transaction {
     required this.totalAmount,
   });
 
-  factory Transaction.fromFirestore(Map<String, dynamic> data, String id) {
-    return Transaction(
+  factory TransactionModel.fromFirestore(Map<String, dynamic> data, String id) {
+    return TransactionModel(
       transactionId: data['transaction_id'] ?? id,
       employeeId: data['employee_id'] ?? '',
       serviceId: data['service_id'] ?? '',
       plateNumber: data['plate_number'] ?? '',
-      vehicleType: data['vehicle_type'] ?? '',
+      vehicleType: VehicleTypeEnum.values.firstWhere(
+        (e) => e.name == data['vehicle_type'],
+        orElse: () => VehicleTypeEnum.car,
+      ),
       vehicleName: data['vehicle_name'] ?? '',
       date: data['date'] is Timestamp
           ? (data['date'] as Timestamp).toDate()
@@ -39,11 +42,10 @@ class Transaction {
 
   Map<String, dynamic> toFirestore() {
     return {
-      'transaction_id': transactionId,
       'employee_id': employeeId,
       'service_id': serviceId,
       'plate_number': plateNumber,
-      'vehicle_type': vehicleType,
+      'vehicle_type': vehicleType.name,
       'vehicle_name': vehicleName,
       'date': date,
       'total_amount': totalAmount,
