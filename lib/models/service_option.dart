@@ -11,9 +11,9 @@ class ServiceOption {
 
   factory ServiceOption.fromFirestore(Map<String, dynamic> data, String id) {
     return ServiceOption(
-      serviceId: data['service_id'] ?? '',
+      serviceId: id,
       serviceName: data['service_name'] ?? '',
-      price: data['price'] ?? '',
+      price: (data['price'] ?? 0.0).toDouble(),
     );
   }
 

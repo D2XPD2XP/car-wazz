@@ -37,8 +37,11 @@ class EmployeePage extends StatelessWidget {
         width: 60,
         child: FloatingActionButton(
           heroTag: 'employeeFab',
-          onPressed: () {  
-            Get.bottomSheet(EmployeeSheet(onAdd: employeeC.createEmployee,), isScrollControlled: true);
+          onPressed: () {
+            Get.bottomSheet(
+              EmployeeSheet(onAdd: employeeC.createEmployee),
+              isScrollControlled: true,
+            );
           },
           backgroundColor: const Color(0xFF0271BA),
           shape: CircleBorder(),
@@ -47,7 +50,9 @@ class EmployeePage extends StatelessWidget {
       ),
       body: Obx(() {
         if (employeeC.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(
+            child: CircularProgressIndicator(color: Color(0xFF0271BA)),
+          );
         }
 
         if (employeeC.employees.isEmpty) {

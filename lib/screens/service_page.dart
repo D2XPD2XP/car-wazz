@@ -1,3 +1,4 @@
+import 'package:car_wazz/controllers/service_option_controller.dart';
 import 'package:car_wazz/widgets/service_item.dart';
 import 'package:car_wazz/widgets/service_sheet.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,10 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ServicePage extends StatelessWidget {
-  const ServicePage({super.key});
+  ServicePage({super.key});
+
+  final ServiceOptionController serviceOptionController =
+      Get.find<ServiceOptionController>();
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +30,9 @@ class ServicePage extends StatelessWidget {
               return GestureDetector(
                 onTap: () {
                   Get.bottomSheet(
-                    const ServiceSheet(),
+                    ServiceSheet(
+                      onAdd: serviceOptionController.createServiceOption,
+                    ),
                     isScrollControlled: true,
                   );
                 },
@@ -44,14 +50,38 @@ class ServicePage extends StatelessWidget {
           ),
         ],
       ),
-      body: Container(
-        margin: EdgeInsets.only(top: 18),
-        padding: EdgeInsets.symmetric(horizontal: 28),
-        child: ListView.builder(
-          itemCount: 5,
-          itemBuilder: (context, index) => ServiceItem(),
-        ),
-      ),
+      body: Obx(() {
+        if (serviceOptionController.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (serviceOptionController.serviceOptions.isEmpty) {
+          return Center(
+            child: Text(
+              "No Services",
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 16,
+                color: Color(0xFF0271BA),
+              ),
+            ),
+          );
+        }
+
+        return Container(
+          margin: EdgeInsets.only(top: 18),
+          padding: EdgeInsets.symmetric(horizontal: 28),
+          child: ListView.builder(
+            itemCount: serviceOptionController.serviceOptions.length,
+            itemBuilder: (context, index) => ServiceItem(
+              id: serviceOptionController.serviceOptions[index].serviceId,
+              name: serviceOptionController.serviceOptions[index].serviceName,
+              price: serviceOptionController.serviceOptions[index].price,
+              onDelete: serviceOptionController.deleteServiceOption,
+              onEdit: serviceOptionController.updateServiceOption,
+            ),
+          ),
+        );
+      }),
     );
   }
 }

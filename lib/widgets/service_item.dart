@@ -1,9 +1,24 @@
 import 'package:car_wazz/widgets/rupiah_formatter.dart';
+import 'package:car_wazz/widgets/service_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ServiceItem extends StatelessWidget {
-  const ServiceItem({super.key});
+  final String id;
+  final String name;
+  final double price;
+  final Future<void> Function(String) onDelete;
+  final Future<void> Function(String, String, String) onEdit;
+
+  const ServiceItem({
+    super.key,
+    required this.id,
+    required this.name,
+    required this.price,
+    required this.onDelete,
+    required this.onEdit,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +50,7 @@ class ServiceItem extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    'Wash and Detailing',
+                    name,
                     style: GoogleFonts.plusJakartaSans(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -47,7 +62,7 @@ class ServiceItem extends StatelessWidget {
               ),
               SizedBox(height: 6),
               RupiahFormatter(
-                price: 80000,
+                price: price,
                 size: 18,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF2CA600),
@@ -56,11 +71,18 @@ class ServiceItem extends StatelessWidget {
           ),
           Spacer(),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Get.bottomSheet(
+                ServiceSheet(id: id, name: name, price: price, onEdit: onEdit),
+                isScrollControlled: true,
+              );
+            },
             icon: Icon(Icons.edit_outlined, color: Color(0xFF0271BA)),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () async {
+              await onDelete(id);
+            },
             icon: Icon(
               Icons.delete_outline,
               color: const Color.fromARGB(255, 182, 26, 15),
