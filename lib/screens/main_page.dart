@@ -2,6 +2,7 @@ import 'package:car_wazz/controllers/auth_controller.dart';
 import 'package:car_wazz/controllers/employee_controller.dart';
 import 'package:car_wazz/controllers/main_controller.dart';
 import 'package:car_wazz/controllers/service_option_controller.dart';
+import 'package:car_wazz/controllers/transaction_controller.dart';
 import 'package:car_wazz/screens/employee_page.dart';
 import 'package:car_wazz/screens/history_page.dart';
 import 'package:car_wazz/screens/homepage.dart';
@@ -27,8 +28,10 @@ class MainPage extends StatelessWidget {
         );
       }
 
-      if (!Get.isRegistered<EmployeeController>() &&
+      if (!Get.isRegistered<TransactionController>() &&
+          !Get.isRegistered<EmployeeController>() &&
           !Get.isRegistered<ServiceOptionController>()) {
+        Get.put(TransactionController(authC.currentUser.value!.userId));
         Get.put(EmployeeController(authC.currentUser.value!.userId));
         Get.put(ServiceOptionController(authC.currentUser.value!.userId));
       }

@@ -41,6 +41,7 @@ class ServiceItem extends StatelessWidget {
       child: Row(
         children: [
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),

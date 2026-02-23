@@ -1,1 +1,1 @@
-enum VehicleTypeEnum {car, motorcycle}
+enum VehicleTypeEnum {car, bike}

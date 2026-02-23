@@ -1,7 +1,13 @@
+import 'package:car_wazz/controllers/search_bar_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CustomSearchBar extends StatelessWidget {
-  const CustomSearchBar({super.key});
+  final void Function(dynamic)? onSearch;
+
+  CustomSearchBar({super.key, this.onSearch});
+
+  final searchBarController = Get.put(SearchBarController());
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +26,7 @@ class CustomSearchBar extends StatelessWidget {
         ],
       ),
       child: TextField(
+        controller: searchBarController.searchController,
         decoration: InputDecoration(
           hintText: 'SEARCH PLATE',
           hintStyle: TextStyle(color: Color(0xFF777777), fontSize: 10),
@@ -27,6 +34,7 @@ class CustomSearchBar extends StatelessWidget {
           border: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(vertical: 2),
         ),
+        onChanged: onSearch,
       ),
     );
   }

@@ -1,9 +1,26 @@
+import 'package:car_wazz/enums/vehicle_type_enum.dart';
+import 'package:car_wazz/widgets/rupiah_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TransactionCard extends StatelessWidget {
-  const TransactionCard({super.key});
+  final String plate;
+  final String vehicleName;
+  final String employeeName;
+  final String serviceName;
+  final VehicleTypeEnum vehicleType;
+  final double total;
 
+  const TransactionCard({
+    super.key,
+    required this.plate,
+    required this.vehicleName,
+    required this.employeeName,
+    required this.serviceName,
+    required this.vehicleType,
+    required this.total,
+  });
+  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,7 +45,7 @@ class TransactionCard extends StatelessWidget {
           Row(
             children: [
               Text(
-                'E-17-VR',
+                plate,
                 style: GoogleFonts.plusJakartaSans(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
@@ -42,7 +59,7 @@ class TransactionCard extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
-                  Icons.directions_car_filled_outlined,
+                  vehicleType.name == 'car' ? Icons.directions_car_filled_outlined : Icons.motorcycle_outlined,
                   color: Colors.white,
                 ),
               ),
@@ -55,7 +72,7 @@ class TransactionCard extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    'Asep',
+                    employeeName,
                     style: GoogleFonts.plusJakartaSans(
                       color: Color(0xFF777777),
                       fontWeight: FontWeight.bold,
@@ -67,7 +84,7 @@ class TransactionCard extends StatelessWidget {
             ],
           ),
           Text(
-            'Pajero Sport',
+            vehicleName,
             style: GoogleFonts.plusJakartaSans(
               color: Color(0xFF777777),
               fontWeight: FontWeight.w400,
@@ -85,7 +102,7 @@ class TransactionCard extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    'Wash and Detailing',
+                    serviceName,
                     style: GoogleFonts.plusJakartaSans(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -95,19 +112,12 @@ class TransactionCard extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(width: 8,),
+              SizedBox(width: 8),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(
-                      'Rp. 80.000',
-                      style: GoogleFonts.plusJakartaSans(
-                        color: Color(0xFF2CA600),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
+                    RupiahFormatter(price: total, color: Color(0xFF2CA600), fontWeight: FontWeight.bold, size: 18)
                   ],
                 ),
               ),

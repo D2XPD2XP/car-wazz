@@ -1,145 +1,117 @@
-// import 'dart:async';
-// import 'package:get/get.dart';
-// import '../models/transaction.dart';
-// import '../services/transaction_service.dart';
-// import '../enums/vehicle_type_enum.dart';
+import 'package:car_wazz/enums/vehicle_type_enum.dart';
+import 'package:car_wazz/models/transaction.dart';
+import 'package:car_wazz/services/transaction_service.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:uuid/uuid.dart';
 
-// class TransactionController extends GetxController {
-//   final TransactionService _service = TransactionService();
+class TransactionController extends GetxController {
+  final String userId;
+  final TransactionService _service = TransactionService();
 
-//   final RxList<TransactionModel> transactions = <TransactionModel>[].obs;
-//   final RxBool isLoading = false.obs;
+  TransactionController(this.userId);
 
-//   StreamSubscription<List<TransactionModel>>? _subscription;
+  var allTransactions = <TransactionModel>[].obs;
+  var todayTransactions = <TransactionModel>[].obs;
+  var isLoading = true.obs;
 
-//   @override
-//   void onInit() {
-//     super.onInit();
-//     fetchAllTransactions();
-//   }
+  @override
+  void onInit() {
+    super.onInit();
+    allTransactions.bindStream(_service.getAllTransactions(userId));
+    todayTransactions.bindStream(_service.getTodayTransactions(userId));
 
-//   @override
-//   void onClose() {
-//     _subscription?.cancel();
-//     super.onClose();
-//   }
+    ever(allTransactions, (_) => isLoading.value = false);
+  }
 
-//   void _bindStream(Stream<List<TransactionModel>> stream) {
-//     isLoading.value = true;
-//     _subscription?.cancel();
+  Future<void> createTransaction(
+    String employeeId,
+    String serviceId,
+    String plateNumber,
+    VehicleTypeEnum vehicleType,
+    String vehicleName,
+    double totalAmount,
+  ) async {
+    try {
+      if (plateNumber.isEmpty ||
+          vehicleName.isEmpty ||
+          totalAmount <= 0 ||
+          employeeId.isEmpty) {
+        _showErrorDialog("Add Transaction Failed");
+        return;
+      }
 
-//     _subscription = stream.listen((data) {
-//       transactions.assignAll(data);
-//       isLoading.value = false;
-//     });
-//   }
+      final transaction = TransactionModel(
+        transactionId: const Uuid().v4(),
+        employeeId: employeeId,
+        serviceId: serviceId,
+        plateNumber: plateNumber,
+        vehicleType: vehicleType,
+        vehicleName: vehicleName,
+        date: DateTime.now(),
+        totalAmount: totalAmount,
+      );
 
-//   void fetchAllTransactions() {
-//     _bindStream(_service.getAllTransactions());
-//   }
+      await _service.addTransaction(userId, transaction);
+      Get.back();
+    } catch (e) {
+      _showErrorDialog("Error: ${e.toString()}");
+    }
+  }
 
-//   void fetchTransactionsByEmployee(String employeeId) {
-//     _bindStream(_service.getTransactionsByEmployee(employeeId));
-//   }
+  Future<void> deleteTransaction(String transactionId) async {
+    try {
+      await _service.deleteTransaction(userId, transactionId);
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "Failed to delete transaction",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
+  }
 
-//   void fetchTodayTransactions() {
-//     _bindStream(_service.getTodayTransactions());
-//   }
+  List<TransactionModel> filterByEmployee(String employeeId) {
+    return allTransactions.where((t) => t.employeeId == employeeId).toList();
+  }
 
-//   void fetchTodayTransactionsByEmployee(String employeeId) {
-//     _bindStream(_service.getTodayTransactionsByEmployee(employeeId));
-//   }
-
-//   int get totalTransactionCount {
-//     return transactions.length;
-//   }
-
-//   Map<VehicleTypeEnum, int> get totalTransactionCountByVehicleType {
-//     final Map<VehicleTypeEnum, int> result = {};
-//     for (final trx in transactions) {
-//       result.update(
-//         trx.vehicleType,
-//         (value) => value + 1,
-//         ifAbsent: () => 1,
-//       );
-//     }
-//     return result;
-//   }
-
-//   Map<VehicleTypeEnum, int> get todayTransactionCountByVehicleType {
-//     final now = DateTime.now();
-//     final Map<VehicleTypeEnum, int> result = {};
-
-//     for (final trx in transactions) {
-//       final isToday =
-//           trx.date.year == now.year &&
-//           trx.date.month == now.month &&
-//           trx.date.day == now.day;
-
-//       if (isToday) {
-//         result.update(
-//           trx.vehicleType,
-//           (value) => value + 1,
-//           ifAbsent: () => 1,
-//         );
-//       }
-//     }
-//     return result;
-//   }
-
-//   Map<VehicleTypeEnum, double> get totalIncomeByVehicleType {
-//     final Map<VehicleTypeEnum, double> result = {};
-//     for (final trx in transactions) {
-//       result.update(
-//         trx.vehicleType,
-//         (value) => value + trx.totalAmount,
-//         ifAbsent: () => trx.totalAmount,
-//       );
-//     }
-//     return result;
-//   }
-
-//   Map<VehicleTypeEnum, double> get todayIncomeByVehicleType {
-//     final now = DateTime.now();
-//     final Map<VehicleTypeEnum, double> result = {};
-
-//     for (final trx in transactions) {
-//       final isToday =
-//           trx.date.year == now.year &&
-//           trx.date.month == now.month &&
-//           trx.date.day == now.day;
-
-//       if (isToday) {
-//         result.update(
-//           trx.vehicleType,
-//           (value) => value + trx.totalAmount,
-//           ifAbsent: () => trx.totalAmount,
-//         );
-//       }
-//     }
-//     return result;
-//   }
-
-//   double get totalIncome {
-//     return transactions.fold(
-//         0.0, (sum, trx) => sum + trx.totalAmount);
-//   }
-
-//   Future<void> addTransaction(TransactionModel transaction) async {
-//     isLoading.value = true;
-//     await _service.addTransaction(transaction);
-//     isLoading.value = false;
-//   }
-
-//   Future<void> updateTransaction(TransactionModel transaction) async {
-//     isLoading.value = true;
-//     await _service.updateTransaction(transaction);
-//     isLoading.value = false;
-//   }
-
-//   Future<void> deleteTransaction(String id) async {
-//     isLoading.value = true;
-//     await _service.deleteTransaction(id);
-//     isLoading.value = false;
-//   }
-// }
+  void _showErrorDialog(String title) {
+    Get.dialog(
+      AlertDialog(
+        backgroundColor: Colors.white,
+        title: Text(
+          title,
+          style: GoogleFonts.plusJakartaSans(
+            color: Colors.red,
+            fontWeight: FontWeight.bold,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        content: Text(
+          "Please check all fields and try again.",
+          style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w400),
+          textAlign: TextAlign.center,
+        ),
+        actions: [
+          Center(
+            child: ElevatedButton(
+              onPressed: () => Get.back(),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.red,
+                side: const BorderSide(color: Colors.red),
+              ),
+              child: const Text(
+                "OK",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeVehicleCard extends StatelessWidget {
-  const HomeVehicleCard({super.key});
+  final String type;
+  final int total;
+
+  const HomeVehicleCard({super.key, required this.type, required this.total});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,7 @@ class HomeVehicleCard extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'Car',
+            type,
             style: GoogleFonts.plusJakartaSans(
               color: Color(0xFF0271BA),
               fontWeight: FontWeight.w400,
@@ -33,7 +36,7 @@ class HomeVehicleCard extends StatelessWidget {
             ),
           ),
           Text(
-            '981',
+            '$total',
             style: GoogleFonts.plusJakartaSans(
               color: Color(0xFF0271BA),
               fontWeight: FontWeight.bold,

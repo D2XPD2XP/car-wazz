@@ -72,13 +72,22 @@ class EmployeePage extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 28),
           child: ListView.builder(
             itemCount: employeeC.employees.length,
-            itemBuilder: (context, index) => EmployeeItem(
-              id: employeeC.employees[index].employeeId,
-              name: employeeC.employees[index].name,
-              phoneNumber: employeeC.employees[index].phoneNumber,
-              onDelete: employeeC.deleteEmployee,
-              onEdit: employeeC.updateEmployee,
-            ),
+            itemBuilder: (context, index) {
+              final income =
+                  employeeC.todayIncomeByEmployee[employeeC
+                      .employees[index]
+                      .employeeId] ??
+                  0;
+
+              return EmployeeItem(
+                id: employeeC.employees[index].employeeId,
+                name: employeeC.employees[index].name,
+                phoneNumber: employeeC.employees[index].phoneNumber,
+                onDelete: employeeC.deleteEmployee,
+                income: income,
+                onEdit: employeeC.updateEmployee,
+              );
+            },
           ),
         );
       }),

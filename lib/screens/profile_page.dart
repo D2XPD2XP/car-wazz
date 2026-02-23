@@ -2,7 +2,6 @@ import 'package:car_wazz/controllers/auth_controller.dart';
 import 'package:car_wazz/screens/service_page.dart';
 import 'package:car_wazz/widgets/profile_card.dart';
 import 'package:car_wazz/widgets/profile_menu_item.dart';
-import 'package:car_wazz/widgets/vehicle_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -42,14 +41,6 @@ class ProfilePage extends StatelessWidget {
               }
               return ProfileCard(email: user.email, username: user.username);
             }),
-            SizedBox(height: 14),
-            Row(
-              children: [
-                Expanded(child: VehicleCard()),
-                SizedBox(width: 12),
-                Expanded(child: VehicleCard()),
-              ],
-            ),
             SizedBox(height: 18),
             ProfileMenuItem(
               icon: Icons.dashboard_customize_outlined,

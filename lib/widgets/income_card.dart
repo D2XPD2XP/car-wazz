@@ -1,13 +1,20 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:car_wazz/widgets/rupiah_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class IncomeCard extends StatelessWidget {
+  final double dailyIncome;
   final VoidCallback onTap;
   final bool isDispose;
 
-  const IncomeCard({super.key, required this.onTap, required this.isDispose});
+  const IncomeCard({
+    super.key,
+    required this.onTap,
+    required this.isDispose,
+    required this.dailyIncome,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -71,15 +78,17 @@ class IncomeCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 18),
-          AutoSizeText(
-            isDispose == true ? "Rp. ..." : "Rp. 20.000.000",
-            maxLines: 1,
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
+          isDispose == true
+              ? AutoSizeText(
+                  "Rp. ...",
+                  maxLines: 1,
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                )
+              : RupiahFormatter(price: dailyIncome, isAutoSize: true),
         ],
       ),
     );

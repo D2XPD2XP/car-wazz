@@ -1,3 +1,5 @@
+import 'package:car_wazz/controllers/transaction_controller.dart';
+import 'package:car_wazz/models/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:car_wazz/models/employee.dart';
@@ -7,22 +9,40 @@ import 'package:uuid/uuid.dart';
 
 class EmployeeController extends GetxController {
   final String userId;
-  final EmployeeService _service = EmployeeService();
-
   EmployeeController(this.userId);
 
+  final EmployeeService _service = EmployeeService();
+  late final TransactionController trxC;
+
   var employees = <Employee>[].obs;
+  var todayIncomeByEmployee = <String, double>{}.obs;
   var isLoading = true.obs;
 
   @override
   void onInit() {
-    super.onInit();
+    super.onInit(); 
+
+    trxC = Get.find<TransactionController>();
 
     employees.bindStream(_service.getEmployees(userId));
+
+    ever(trxC.todayTransactions, (transactions) {
+      calculateTodayTransaction(transactions);
+    });
 
     ever(employees, (_) {
       isLoading.value = false;
     });
+  }
+
+  void calculateTodayTransaction(List<TransactionModel> transactions) {
+    final map = <String, double>{};
+
+    for (final t in transactions) {
+      map[t.employeeId] = (map[t.employeeId] ?? 0) + t.totalAmount;
+    }
+
+    todayIncomeByEmployee.value = map;
   }
 
   Future<void> createEmployee(String name, String phone) async {
