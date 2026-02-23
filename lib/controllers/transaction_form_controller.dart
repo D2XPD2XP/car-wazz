@@ -17,6 +17,8 @@ class TransactionFormController extends GetxController{
   void clearForm() {
     nameC.clear();
     plateC.clear();
+    selectedEmployee.value = null;
+    selectedService.value = null;
   }
 
   void editService(String vName, String vPlate) {

@@ -267,6 +267,8 @@ class TransactionSheet extends StatelessWidget {
                   transactionFormController.nameC.text,
                   selectedServ.price,
                 );
+
+                transactionFormController.clearForm();
               },
               child: Text(
                 "Confirm",
